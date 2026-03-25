@@ -1,12 +1,12 @@
 # commitmaxxing
 
-A Claude Code hook that reminds Claude to commit after every turn. Because green squares don't grow themselves.
+A Claude Code hook that makes your GitHub contribution graph look like you never sleep.
 
 ## Why
 
-Saw [@bcherny](https://x.com/bcherny) hit 266 contributions in a single day. Looked at my contribution graph and felt personally attacked.
+Saw [@bcherny](https://x.com/bcherny) hit 266 contributions in a single day. Looked at my graph and felt personally attacked.
 
-Claude Code knows how to commit. It just forgets. CLAUDE.md rules work sometimes, but mid-session Claude's memory is basically a goldfish. Hooks fire every time — system-level, not memory-level. Can't forget if the system won't let you.
+So I built a hook. Is it useful for granular commit history? Sure. But let's be honest — it's mostly about the green squares.
 
 ## The hook
 
@@ -17,7 +17,7 @@ git rev-parse --is-inside-work-tree &>/dev/null || exit 0
 echo '{"hookSpecificOutput":{"hookEventName":"Stop","additionalContext":"You have uncommitted changes. Commit now with a descriptive message before continuing."}}'
 ```
 
-That's it. Five lines. It checks if you're in a git repo, then tells Claude to commit. Claude handles the rest — staging, message, the actual commit. No git gymnastics. Claude already knows how to use git; it just needs a nudge.
+Five lines. Every time Claude finishes a response, it gets a nudge: "commit now." Claude already knows git. It just needs reminding.
 
 ## Install
 
@@ -48,14 +48,12 @@ Add to `~/.claude/settings.json`:
 }
 ```
 
-If you already have Stop hooks, just add the hook object to your existing array.
-
 ## How it works
 
-The `Stop` hook fires every time Claude finishes a response. The hook injects a reminder into Claude's context: "you have uncommitted changes, commit now." Claude reads that and commits properly.
+`Stop` hook fires after every Claude response. Injects "you have uncommitted changes, commit now" into Claude's context. Claude commits. Your graph goes green.
 
-We went through four iterations to get here. Started with a 51-line script that handled merge conflicts, detached HEADs, bisect state, porcelain status checks, and filenames with spaces. Then realised: Claude already knows all of that. The hook doesn't need to be a git tutorial. It just needs to say "oi, commit."
+Started at 51 lines with merge conflict guards, detached HEAD checks, and porcelain status optimisations. Then realised Claude already knows git. Deleted 46 lines.
 
 ## License
 
-MIT. Go make your contribution graph radioactive.
+MIT. Go turn your contribution graph radioactive.
