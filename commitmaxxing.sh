@@ -1,19 +1,34 @@
 #!/usr/bin/env bash
 # commitmaxxing.sh - Auto-commit after every Claude turn
 # Fires on Stop hook = one commit per logical unit of Claude work
+#
+# NEVER use set -e in hooks — a failed command must not block Claude.
 
-set -euo pipefail
+# Use CLAUDE_PROJECT_DIR if available, fall back to CWD
+DIR="${CLAUDE_PROJECT_DIR:-$PWD}"
+cd "$DIR" 2>/dev/null || exit 0
 
 # Only run in git repos
 git rev-parse --is-inside-work-tree &>/dev/null || exit 0
 
-# Only commit if there are actual changes (staged or unstaged)
-if git diff --quiet HEAD 2>/dev/null && git diff --cached --quiet 2>/dev/null && [ -z "$(git ls-files --others --exclude-standard)" ]; then
+# Bail if git is mid-rebase, mid-merge, or mid-cherry-pick
+if [ -d ".git/rebase-merge" ] || [ -d ".git/rebase-apply" ] || \
+   [ -f ".git/MERGE_HEAD" ] || [ -f ".git/CHERRY_PICK_HEAD" ]; then
     exit 0
 fi
 
-# Stage everything
-git add -A
+# Bail if HEAD is detached (e.g. during interactive rebase)
+git symbolic-ref HEAD &>/dev/null || exit 0
+
+# Only commit if there are actual changes (staged, unstaged, or untracked)
+if git diff --quiet HEAD 2>/dev/null && \
+   git diff --cached --quiet 2>/dev/null && \
+   [ -z "$(git ls-files --others --exclude-standard 2>/dev/null)" ]; then
+    exit 0
+fi
+
+# Stage everything (respects .gitignore)
+git add -A 2>/dev/null || exit 0
 
 # Double-check something is actually staged
 git diff-index --quiet HEAD 2>/dev/null && exit 0
