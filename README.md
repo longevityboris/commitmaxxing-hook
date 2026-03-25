@@ -38,8 +38,7 @@ Add to `~/.claude/settings.json`:
           {
             "type": "command",
             "command": "bash ~/.claude/hooks/commitmaxxing.sh",
-            "timeout": 15,
-            "async": true
+            "timeout": 15
           }
         ]
       }
