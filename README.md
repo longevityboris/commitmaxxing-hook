@@ -34,17 +34,7 @@ This hook turns every Claude interaction into a commit. Is it useful for granula
 
 ## Before vs After
 
-```
-BEFORE (sad, grey, concerning)
-  Mon  . . . . . . . . . . . .
-  Wed  . . . . # . . . . . . .
-  Fri  . . . . . . . . . . . .
-
-AFTER (commitmaxxing)
-  Mon  # # # # # # # # # # # #
-  Wed  # # # # # # # # # # # #
-  Fri  # # # # # # # # # # # #
-```
+![Before and after commitmaxxing — sparse grey graph turns dense green after the install marker](social-preview.png)
 
 Same amount of work. Different graph. Different you.
 
