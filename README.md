@@ -50,6 +50,17 @@ Same amount of work. Different graph. Different you.
 
 ## Install
 
+### Option A — Plugin install (recommended)
+
+```bash
+/plugin marketplace add longevityboris/commitmaxxing-hook
+/plugin install commitmaxxing
+```
+
+That's it. The `Stop` and `SubagentStop` hooks register themselves.
+
+### Option B — Manual install
+
 **1. Download the hook:**
 
 ```bash
@@ -74,12 +85,21 @@ chmod +x ~/.claude/hooks/commitmaxxing.sh
           }
         ]
       }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/commitmaxxing.sh",
+            "timeout": 15
+          }
+        ]
+      }
     ]
   }
 }
 ```
-
-If you use agent teams, register the same script under `SubagentStop` too.
 
 Done. Start a Claude Code session and watch the commits roll in.
 
